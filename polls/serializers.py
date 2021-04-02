@@ -4,15 +4,22 @@ from rest_framework import serializers
 class PollSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
-        fields = ['title', 'begin', 'end', 'description']
+        fields = '__all__'
 
 
 class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['title', 'option']
+
+
+class QuestionByPollsSeriazizer(serializers.ModelSerializer):
     poll = PollSerializer()
 
     class Meta:
         model = Question
-        fields = ['title', 'option', 'poll']
+        fields = ['poll']
+        read_only_fields = ['title', 'option']
 
 
 class AnswerSerializer(serializers.ModelSerializer):

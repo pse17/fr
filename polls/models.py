@@ -20,10 +20,11 @@ class Question(models.Model):
         (TEXT,'Oтвет текстом')
     ]
     option = models.CharField(max_length=1, choices=TYPE_OF_ANSWER)
-    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
+    poll = models.ManyToManyField('Poll', related_name='questions')
 
 
 class Answer(models.Model):
     user = models.IntegerField()
+    poll = models.ForeignKey('Poll', on_delete=models.CASCADE)
     question = models.ForeignKey('Question', on_delete=models.CASCADE)
     answer = models.TextField()
