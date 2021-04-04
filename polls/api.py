@@ -61,8 +61,14 @@ class GetAnswer(generics.CreateAPIView):
         serializer.save(poll=poll, question=question)
 
 
-class GetListPollsByUserID(generics.ListAPIView):
+class GetAnswersByUserID(generics.ListAPIView):
     '''
-    Получаем список опросов по пользователю.
+    Получаем детализацию ответов по опросу, по пользователю.
     '''
-    pass
+    serializer_class = serializers.AnswerSerializer
+
+    def get_queryset(self):
+        return models.Answer.objects
+            .filter(user=self.request.data['user'])
+            .filter(poll__pk=self.request.data['poll'])
+            .all()
